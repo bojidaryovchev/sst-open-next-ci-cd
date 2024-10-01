@@ -1,10 +1,10 @@
 /// <reference path="./.sst/platform/config.d.ts" />
 
-const isProd = $app.stage.startsWith("prod");
+const isProd = (stage: string) => stage.startsWith("prod");
 
 export default $config({
   app(input) {
-    if (isProd) {
+    if (isProd($app.stage)) {
       return {
         name: "prod-env",
         removal: "retain",
@@ -21,7 +21,7 @@ export default $config({
   async run() {
     new sst.aws.Nextjs("App", {
       domain: {
-        name: isProd ? "nwordle.com" : "dev.nwordle.com",
+        name: isProd($app.stage) ? "nwordle.com" : "dev.nwordle.com",
       },
     });
   },
