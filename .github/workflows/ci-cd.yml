@@ -1,0 +1,39 @@
+name: SST Next.js Deployment
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repo
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # Setup Node.js environment
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      # Install dependencies
+      - name: Install Dependencies
+        run: npm install
+
+      # Build the Next.js app
+      - name: Build Application
+        run: npm run build
+
+      # Deploy to SST (using the dev or prod stage as needed)
+      - name: Deploy with SST
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: "us-east-1"
+        run: |
+          npx sst deploy --stage dev
