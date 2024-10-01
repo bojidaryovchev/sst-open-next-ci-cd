@@ -1,27 +1,27 @@
 /// <reference path="./.sst/platform/config.d.ts" />
 
+const isProd = $app.stage.startsWith("prod");
+
 export default $config({
   app(input) {
+    if (isProd) {
+      return {
+        name: "prod-env",
+        removal: "retain",
+        home: "aws",
+      };
+    }
+
     return {
-      name: "aws-nextjs",
-      removal: input?.stage === "production" ? "retain" : "remove",
+      name: "dev-env",
+      removal: "remove",
       home: "aws",
     };
   },
   async run() {
-    if ($app.stage === "prod") {
-      new sst.aws.Nextjs("Production", {
-        domain: {
-          name: "nwordle.com",
-        },
-      });
-
-      return;
-    }
-
-    new sst.aws.Nextjs("Development", {
+    new sst.aws.Nextjs("App", {
       domain: {
-        name: "dev.nwordle.com",
+        name: isProd ? "nwordle.com" : "dev.nwordle.com",
       },
     });
   },
