@@ -4,7 +4,7 @@ const isProd = (stage: string) => stage.startsWith("prod");
 
 export default $config({
   app(input) {
-    if (isProd($app.stage)) {
+    if (isProd(input.stage)) {
       return {
         name: "prod-env",
         removal: "retain",
