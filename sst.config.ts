@@ -9,6 +9,10 @@ export default $config({
     };
   },
   async run() {
-    new sst.aws.Nextjs("MyWeb");
+    new sst.aws.Nextjs("MyWeb", {
+      domain: {
+        name: $app.stage === "prod" ? "nwordle.com" : "dev.nwordle.com",
+      },
+    });
   },
 });
