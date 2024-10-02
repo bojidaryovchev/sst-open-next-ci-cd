@@ -13,7 +13,9 @@ export default $config({
   async run() {
     new sst.aws.Nextjs("OpenNext", {
       domain: {
-        name: `${$app.stage}.justpurrrfect.com`,
+        name: isProd($app.stage)
+          ? "justpurrrfect.com"
+          : `${$app.stage}.justpurrrfect.com`,
       },
     });
   },
