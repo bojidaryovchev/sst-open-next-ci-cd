@@ -13,7 +13,7 @@ export default $config({
   async run() {
     new sst.aws.Nextjs("OpenNext", {
       domain: {
-        name: `${$app.stage}.nwordle.com`,
+        name: `${$app.stage}.justpurrrfect.com`,
       },
     });
   },
