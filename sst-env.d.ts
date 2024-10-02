@@ -5,7 +5,7 @@ import "sst"
 export {}
 declare module "sst" {
   export interface Resource {
-    "MyWeb": {
+    "OpenNext": {
       "type": "sst.aws.Nextjs"
       "url": string
     }

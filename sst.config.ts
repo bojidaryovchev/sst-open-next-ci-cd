@@ -4,24 +4,16 @@ const isProd = (stage: string) => stage.startsWith("prod");
 
 export default $config({
   app(input) {
-    if (isProd(input.stage)) {
-      return {
-        name: "prod-env",
-        removal: "retain",
-        home: "aws",
-      };
-    }
-
     return {
-      name: "dev-env",
-      removal: "remove",
+      name: "aws-nextjs",
+      removal: isProd(input.stage) ? "retain" : "remove",
       home: "aws",
     };
   },
   async run() {
-    new sst.aws.Nextjs(isProd($app.stage) ? "OpenNextProd" : "OpenNextDev", {
+    new sst.aws.Nextjs("OpenNext", {
       domain: {
-        name: isProd($app.stage) ? "nwordle.com" : "dev.nwordle.com",
+        name: `${$app.stage}.nwordle.com`,
       },
     });
   },
