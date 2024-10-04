@@ -1,4 +1,4 @@
-name: SST Next.js Deployment
+name: SST Next.js Development Deployment
 
 on:
   push:
@@ -30,25 +30,12 @@ jobs:
         run: npm run build
 
       - name: Deploy (Development)
-        if: github.ref == 'refs/heads/main'
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: "us-east-1"
+          AWS_REGION: ${{ secrets.AWS_REGION }}
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           AUTH_GOOGLE_ID: ${{ secrets.AUTH_GOOGLE_ID }}
           AUTH_GOOGLE_SECRET: ${{ secrets.AUTH_GOOGLE_SECRET }}
         run: |
           npx sst deploy --stage dev
-
-      - name: Deploy (Production)
-        if: github.event_name == 'workflow_dispatch'
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: "us-east-1"
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          AUTH_GOOGLE_ID: ${{ secrets.AUTH_GOOGLE_ID }}
-          AUTH_GOOGLE_SECRET: ${{ secrets.AUTH_GOOGLE_SECRET }}
-        run: |
-          npx sst deploy --stage prod
