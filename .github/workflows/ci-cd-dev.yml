@@ -36,7 +36,7 @@ jobs:
           AWS_REGION: ${{ secrets.AWS_REGION }}
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
-          AUTH_TRUST_HOST: ${{ secrets.AUTH_TRUST_HOST }}
+          AUTH_TRUST_HOST: true
           AUTH_URL: "https://dev.justpurrrfect.com"
           AUTH_GOOGLE_ID: ${{ secrets.AUTH_GOOGLE_ID_DEV }}
           AUTH_GOOGLE_SECRET: ${{ secrets.AUTH_GOOGLE_SECRET_DEV }}
