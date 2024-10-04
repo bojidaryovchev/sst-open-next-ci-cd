@@ -8,7 +8,8 @@
     "lint": "next lint",
     "start": "next start",
     "prisma:push": "prisma db push",
-    "prisma:studio": "prisma studio"
+    "prisma:studio": "prisma studio",
+    "prettier:write": "node_modules\\.bin\\prettier --write ."
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.5.3",
@@ -17,7 +18,8 @@
     "next-auth": "^5.0.0-beta.22",
     "react": "^18",
     "react-dom": "^18",
-    "sst": "3.1.49"
+    "sst": "3.1.49",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/node": "^20",
@@ -26,6 +28,7 @@
     "eslint": "^8",
     "eslint-config-next": "14.2.13",
     "postcss": "^8",
+    "prettier": "^3.3.3",
     "prisma": "^5.20.0",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"

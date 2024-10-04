@@ -1,4 +1,6 @@
-import SignIn from "@/components/sign-in";
+import { signOut } from "@/auth";
+import CredentialsSignIn from "@/components/credentials-sign-in";
+import GoogleSignIn from "@/components/google-sign-in";
 import UserAvatar from "@/components/user-avatar";
 import Image from "next/image";
 
@@ -8,9 +10,20 @@ export default function Home() {
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
         <div className="w-32 h-32 bg-orange-400 rounded-full"></div>
 
-        <SignIn />
+        <CredentialsSignIn />
+
+        <GoogleSignIn />
 
         <UserAvatar />
+
+        <form
+          action={async () => {
+            "use server";
+            await signOut();
+          }}
+        >
+          <button type="submit">Sign out</button>
+        </form>
 
         <Image
           className="dark:invert"
@@ -64,13 +77,7 @@ export default function Home() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
+          <Image aria-hidden src="https://nextjs.org/icons/file.svg" alt="File icon" width={16} height={16} />
           Learn
         </a>
         <a
@@ -79,13 +86,7 @@ export default function Home() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
+          <Image aria-hidden src="https://nextjs.org/icons/window.svg" alt="Window icon" width={16} height={16} />
           Examples
         </a>
         <a
@@ -94,13 +95,7 @@ export default function Home() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
+          <Image aria-hidden src="https://nextjs.org/icons/globe.svg" alt="Globe icon" width={16} height={16} />
           Go to nextjs.org →
         </a>
       </footer>

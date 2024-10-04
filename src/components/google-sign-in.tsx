@@ -1,6 +1,6 @@
 import { signIn } from "@/auth";
 
-export default function SignIn() {
+const GoogleSignIn: React.FC = () => {
   return (
     <form
       action={async () => {
@@ -14,11 +14,7 @@ export default function SignIn() {
         className="flex items-center bg-white border border-button-border-light rounded-md p-0.5 pr-3"
       >
         <div className="flex items-center justify-center bg-white w-9 h-9 rounded-l">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            className="w-5 h-5"
-          >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-5 h-5">
             <title>Sign in with Google</title>
             <desc>Google G Logo</desc>
             <path
@@ -39,10 +35,10 @@ export default function SignIn() {
             ></path>
           </svg>
         </div>
-        <span className="text-sm text-google-text-gray tracking-wider">
-          Sign in with Google
-        </span>
+        <span className="text-sm text-google-text-gray tracking-wider">Sign in with Google</span>
       </button>
     </form>
   );
-}
+};
+
+export default GoogleSignIn;

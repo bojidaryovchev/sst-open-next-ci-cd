@@ -13,9 +13,7 @@ export default $config({
   async run() {
     new sst.aws.Nextjs("OpenNext", {
       domain: {
-        name: isProd($app.stage)
-          ? "justpurrrfect.com"
-          : `${$app.stage}.justpurrrfect.com`,
+        name: isProd($app.stage) ? "justpurrrfect.com" : `${$app.stage}.justpurrrfect.com`,
       },
       environment: {
         AUTH_GOOGLE_ID: process.env.AUTH_GOOGLE_ID!,
