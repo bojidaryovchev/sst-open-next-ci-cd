@@ -23,6 +23,7 @@ export const metadata: Metadata = {
 
 const RootLayout: React.FC<PropsWithChildren> = async ({ children }) => {
   const session = await auth();
+
   return (
     <SessionProvider session={session}>
       <html lang="en">
