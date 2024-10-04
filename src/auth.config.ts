@@ -35,7 +35,6 @@ export default {
             return user;
           }
 
-          // Verify password
           if (!verifyPassword(user.hashedPassword!, password)) {
             return null;
           }
