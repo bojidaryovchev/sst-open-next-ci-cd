@@ -35,7 +35,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          AUTH_GOOGLE_ID: ${{ secrets.AUTH_GOOGLE_ID }}
-          AUTH_GOOGLE_SECRET: ${{ secrets.AUTH_GOOGLE_SECRET }}
+          AUTH_GOOGLE_ID: ${{ secrets.AUTH_GOOGLE_ID_DEV }}
+          AUTH_GOOGLE_SECRET: ${{ secrets.AUTH_GOOGLE_SECRET_DEV }}
         run: |
           npx sst deploy --stage dev
