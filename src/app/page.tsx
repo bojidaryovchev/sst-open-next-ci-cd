@@ -18,6 +18,14 @@ const HomePage: React.FC = async () => {
 
         <UserAvatar />
 
+        <form
+          action={() => {
+            console.log(process.env);
+          }}
+        >
+          <button type="submit">Do something</button>
+        </form>
+
         {session && (
           <form
             action={async () => {
