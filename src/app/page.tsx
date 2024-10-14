@@ -19,7 +19,7 @@ const HomePage: React.FC = async () => {
         <UserAvatar />
 
         <form
-          action={() => {
+          action={async () => {
             "use server";
             console.log(process.env);
           }}
