@@ -14,10 +14,6 @@ export default $config({
   async run() {
     const domainName = isProd($app.stage) ? "justpurrrfect.com" : `${$app.stage}.justpurrrfect.com`;
 
-    const email = new sst.aws.Email("MyEmail", {
-      sender: `noreply@${domainName}`,
-    });
-
     new sst.aws.Nextjs("OpenNext", {
       domain: {
         name: domainName,
@@ -29,7 +25,6 @@ export default $config({
         AUTH_TRUST_HOST: process.env.AUTH_TRUST_HOST!,
         DATABASE_URL: process.env.DATABASE_URL!,
       },
-      link: [email],
     });
   },
 });
