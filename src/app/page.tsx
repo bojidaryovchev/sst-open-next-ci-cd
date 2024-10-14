@@ -20,6 +20,7 @@ const HomePage: React.FC = async () => {
 
         <form
           action={() => {
+            "use server";
             console.log(process.env);
           }}
         >
