@@ -14,11 +14,9 @@ export default $config({
   async run() {
     const domainName = isProd($app.stage) ? "justpurrrfect.com" : `${$app.stage}.justpurrrfect.com`;
 
-    const email =
-      sst.aws.Email.get("OpenNextEmail", `noreply@${domainName}`) ??
-      new sst.aws.Email("OpenNextEmail", {
-        sender: `noreply@${domainName}`,
-      });
+    const email = new sst.aws.Email("OpenNextEmail", {
+      sender: `noreply@${domainName}`,
+    });
 
     new sst.aws.Nextjs("OpenNext", {
       domain: {
