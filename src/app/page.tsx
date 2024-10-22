@@ -48,7 +48,7 @@ const HomePage: React.FC = async () => {
               new SendEmailCommand({
                 FromEmailAddress: `noreply@${getSender()}`,
                 Destination: {
-                  ToAddresses: ["bojidaryovchev1@gmail.com"],
+                  ToAddresses: ["bojidaryovchevscience@gmail.com"],
                 },
                 Content: {
                   Simple: {
