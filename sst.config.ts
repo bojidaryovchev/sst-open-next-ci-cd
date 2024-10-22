@@ -15,7 +15,8 @@ export default $config({
     const domainName = isProd($app.stage) ? "justpurrrfect.com" : `${$app.stage}.justpurrrfect.com`;
 
     const email = new sst.aws.Email("OpenNextEmail", {
-      sender: `noreply@${domainName}`,
+      sender: domainName,
+      dmarc: "v=DMARC1; p=quarantine; adkim=s; aspf=s;",
     });
 
     new sst.aws.Nextjs("OpenNext", {
