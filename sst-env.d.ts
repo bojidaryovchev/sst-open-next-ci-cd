@@ -9,5 +9,9 @@ declare module "sst" {
       type: "sst.aws.Nextjs";
       url: string;
     };
+    OpenNextEmail: {
+      type: "sst.aws.Email";
+      sender: string;
+    };
   }
 }

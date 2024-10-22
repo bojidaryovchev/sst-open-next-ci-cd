@@ -2,7 +2,9 @@ import { auth, signOut } from "@/auth";
 import CredentialsSignIn from "@/components/credentials-sign-in";
 import GoogleSignIn from "@/components/google-sign-in";
 import UserAvatar from "@/components/user-avatar";
+import { SESv2Client, SendEmailCommand } from "@aws-sdk/client-sesv2";
 import Image from "next/image";
+import { Resource } from "sst";
 
 const HomePage: React.FC = async () => {
   const session = await auth();
@@ -21,7 +23,24 @@ const HomePage: React.FC = async () => {
         <form
           action={async () => {
             "use server";
-            console.log(process.env);
+
+            const client = new SESv2Client();
+
+            await client.send(
+              new SendEmailCommand({
+                FromEmailAddress: Resource.OpenNextEmail.sender,
+                Destination: {
+                  ToAddresses: ["bojidaryovchev1@gmail.com"],
+                },
+                Content: {
+                  Simple: {
+                    Subject: { Data: "Hello World!" },
+                    Body: { Text: { Data: "Sent from my SST app." } },
+                  },
+                },
+              }),
+            );
+            // console.log(process.env);
           }}
         >
           <button type="submit">Do something</button>
