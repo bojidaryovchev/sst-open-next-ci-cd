@@ -14,6 +14,7 @@ const getSender = (): string => {
 
   console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
 
+  console.log(process.env)
   console.log(process.env.SST_RESOURCE_OpenNextEmail)
 
   const { sender } = JSON.parse(process.env.SST_RESOURCE_OpenNextEmail);
