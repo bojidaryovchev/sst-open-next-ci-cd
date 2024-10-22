@@ -12,14 +12,14 @@ const getSender = (): string => {
     );
   }
 
-  console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+  console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
-  console.log(process.env)
-  console.log(process.env.SST_RESOURCE_OpenNextEmail)
+  console.log(process.env);
+  console.log(process.env.SST_RESOURCE_OpenNextEmail);
 
   const { sender } = JSON.parse(process.env.SST_RESOURCE_OpenNextEmail);
 
-  console.log(sender)
+  console.log(sender);
 
   return sender;
 };
@@ -46,7 +46,7 @@ const HomePage: React.FC = async () => {
 
             await client.send(
               new SendEmailCommand({
-                FromEmailAddress: getSender(),
+                FromEmailAddress: `noreply@${getSender()}`,
                 Destination: {
                   ToAddresses: ["bojidaryovchev1@gmail.com"],
                 },
