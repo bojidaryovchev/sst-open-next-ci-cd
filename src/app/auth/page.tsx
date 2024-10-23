@@ -2,7 +2,7 @@ import CredentialsRegister from "@/components/credentials-register";
 import CredentialsSignIn from "@/components/credentials-sign-in";
 import GoogleSignIn from "@/components/google-sign-in";
 
-const Auth: React.FC = async () => {
+const AuthPage: React.FC = async () => {
   return (
     <main className="min-h-screen py-12 flex items-center justify-center">
       <div className="flex flex-col gap-12 w-96">
@@ -16,4 +16,4 @@ const Auth: React.FC = async () => {
   );
 };
 
-export default Auth;
+export default AuthPage;

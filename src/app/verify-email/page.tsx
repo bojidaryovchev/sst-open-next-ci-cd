@@ -4,7 +4,7 @@ import { verifyEmail } from "@/actions/auth.actions";
 import { redirect, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-const VerifyEmail: React.FC = () => {
+const VerifyEmailPage: React.FC = () => {
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
   const [status, setStatus] = useState<"loading" | "success" | "error">("loading");
@@ -38,4 +38,4 @@ const VerifyEmail: React.FC = () => {
   );
 };
 
-export default VerifyEmail;
+export default VerifyEmailPage;
