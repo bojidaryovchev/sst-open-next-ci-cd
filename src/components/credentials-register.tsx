@@ -1,10 +1,11 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { useState } from "react";
-import { RegisterFormValues, registerSchema } from "@/schemas/register.schema";
 import { registerUser } from "@/actions/auth.actions";
+import { RegisterFormValues, registerSchema } from "@/schemas/register.schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 
 const CredentialsRegister: React.FC = () => {
   const [serverError, setServerError] = useState<string | null>(null);
@@ -102,6 +103,14 @@ const CredentialsRegister: React.FC = () => {
       >
         {isSubmitting ? "Registering..." : "Register"}
       </button>
+
+      <p className="text-sm text-gray-600">
+        {/* eslint-disable-next-line react/no-unescaped-entities */}
+        Didn't receive a verification email?{" "}
+        <Link href="/resend-verification" className="text-blue-500 hover:underline">
+          Click here to get a new one
+        </Link>
+      </p>
     </form>
   );
 };

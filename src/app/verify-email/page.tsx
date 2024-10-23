@@ -1,7 +1,7 @@
 "use client";
 
 import { verifyEmail } from "@/actions/auth.actions";
-import { useSearchParams } from "next/navigation";
+import { redirect, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const VerifyEmail: React.FC = () => {
@@ -16,6 +16,7 @@ const VerifyEmail: React.FC = () => {
         if ("success" in result) {
           setStatus("success");
           setMessage(result.success ?? "");
+          redirect("/auth");
         } else {
           setStatus("error");
           setMessage(result.error);

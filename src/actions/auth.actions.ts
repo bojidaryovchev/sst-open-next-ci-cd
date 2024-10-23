@@ -37,7 +37,7 @@ export async function registerUser(formData: FormData) {
 
     await sendVerificationEmail(email, verificationToken);
 
-    return { success: "User registered successfully, " };
+    return { success: "You have registered successfully, please check your inbox for a verification link" };
   } catch (error) {
     if (error instanceof Error) {
       return { error: error.message };
@@ -67,6 +67,31 @@ export async function verifyEmail(token: string) {
   return { success: "Email verified successfully" };
 }
 
+export async function resendVerificationEmail(email: string) {
+  const user = await prisma.user.findUnique({
+    where: { email },
+  });
+
+  if (!user) {
+    return { error: "User not found" };
+  }
+
+  if (user.emailVerified) {
+    return { error: "Email is already verified" };
+  }
+
+  const verificationToken = randomBytes(32).toString("hex");
+
+  await prisma.user.update({
+    where: { id: user.id },
+    data: { verificationToken },
+  });
+
+  await sendVerificationEmail(email, verificationToken);
+
+  return { success: "Verification email has been resent. Please check your inbox." };
+}
+
 export async function sendVerificationEmail(email: string, token: string) {
   const client = new SESv2Client();
   const sender = extractSender();
@@ -86,7 +111,8 @@ export async function sendVerificationEmail(email: string, token: string) {
               Charset: "UTF-8",
               Data: `
               <p>Click the link below to verify your email:</p>
-              <a href="${verificationUrl}">Verify Email</a>
+              <a href="${verificationUrl}">Verify email</a>
+              <p>If you didn't request this email, you can safely ignore it.</p>
             `,
             },
           },
@@ -108,9 +134,9 @@ export async function authenticate(prevState: string | undefined, formData: Form
     if (error instanceof AuthError) {
       switch (error.type) {
         case "CredentialsSignin":
-          return "Invalid credentials.";
+          return "Invalid credentials";
         default:
-          return "Something went wrong.";
+          return "Something went wrong";
       }
     }
     throw error;
