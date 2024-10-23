@@ -136,7 +136,7 @@ export async function authenticate(prevState: string | undefined, formData: Form
         case "CredentialsSignin":
           return "Invalid credentials";
         default:
-          return "Something went wrong";
+          return error.type;
       }
     }
     throw error;
