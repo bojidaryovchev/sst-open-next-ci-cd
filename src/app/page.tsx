@@ -4,25 +4,7 @@ import GoogleSignIn from "@/components/google-sign-in";
 import UserAvatar from "@/components/user-avatar";
 import { SESv2Client, SendEmailCommand } from "@aws-sdk/client-sesv2";
 import Image from "next/image";
-
-const getSender = (): string => {
-  if (!process.env.SST_RESOURCE_OpenNextEmail) {
-    throw new Error(
-      "Parameter `SST_RESOURCE_OpenNextEmail` not found in `process.env`, unable to determine extract sender.",
-    );
-  }
-
-  console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-
-  console.log(process.env);
-  console.log(process.env.SST_RESOURCE_OpenNextEmail);
-
-  const { sender } = JSON.parse(process.env.SST_RESOURCE_OpenNextEmail);
-
-  console.log(sender);
-
-  return sender;
-};
+import { Resource } from "sst";
 
 const HomePage: React.FC = async () => {
   const session = await auth();
@@ -46,7 +28,7 @@ const HomePage: React.FC = async () => {
 
             await client.send(
               new SendEmailCommand({
-                FromEmailAddress: `noreply@${getSender()}`,
+                FromEmailAddress: `noreply@${Resource.OpenNextEmail.sender}`,
                 Destination: {
                   ToAddresses: ["bojidaryovchev1@gmail.com"],
                 },
