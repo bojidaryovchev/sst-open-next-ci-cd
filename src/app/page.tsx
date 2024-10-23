@@ -1,10 +1,6 @@
 import { auth, signOut } from "@/auth";
-import CredentialsSignIn from "@/components/credentials-sign-in";
-import GoogleSignIn from "@/components/google-sign-in";
 import UserAvatar from "@/components/user-avatar";
-import { SESv2Client, SendEmailCommand } from "@aws-sdk/client-sesv2";
 import Image from "next/image";
-import { Resource } from "sst";
 
 const HomePage: React.FC = async () => {
   const session = await auth();
@@ -14,37 +10,7 @@ const HomePage: React.FC = async () => {
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
         <div className="w-32 h-32 bg-orange-400 rounded-full"></div>
 
-        <CredentialsSignIn />
-
-        <GoogleSignIn />
-
         <UserAvatar />
-
-        <form
-          action={async () => {
-            "use server";
-
-            const client = new SESv2Client();
-
-            await client.send(
-              new SendEmailCommand({
-                FromEmailAddress: `noreply@${Resource.OpenNextEmail.sender}`,
-                Destination: {
-                  ToAddresses: ["bojidaryovchev1@gmail.com"],
-                },
-                Content: {
-                  Simple: {
-                    Subject: { Data: "Hello World!" },
-                    Body: { Text: { Data: "Sent from my SST app." } },
-                  },
-                },
-              }),
-            );
-            // console.log(process.env);
-          }}
-        >
-          <button type="submit">Do something</button>
-        </form>
 
         {session && (
           <form

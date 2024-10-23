@@ -1,42 +1,45 @@
 "use client";
 
-import { authenticate } from "@/actions/auth.actions";
-import { SignInFormValues, signInSchema } from "@/schemas/sign-in.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useState } from "react";
+import { RegisterFormValues, registerSchema } from "@/schemas/register.schema";
+import { registerUser } from "@/actions/auth.actions";
 
-const CredentialsSignIn: React.FC = () => {
-  const [error, setError] = useState<string | null>(null);
-  const router = useRouter();
+const CredentialsRegister: React.FC = () => {
+  const [serverError, setServerError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<SignInFormValues>({
-    resolver: zodResolver(signInSchema),
+  } = useForm<RegisterFormValues>({
+    resolver: zodResolver(registerSchema),
   });
 
-  const onSubmit = async (data: SignInFormValues) => {
-    setError(null);
+  const onSubmit = async (formValues: RegisterFormValues) => {
+    setServerError(null);
+    setSuccessMessage(null);
+
     const formData = new FormData();
-    formData.append("email", data.email);
-    formData.append("password", data.password);
+    formData.append("email", formValues.email);
+    formData.append("password", formValues.password);
+    formData.append("confirmPassword", formValues.confirmPassword);
 
-    const result = await authenticate(undefined, formData);
+    const result = await registerUser(formData);
 
-    if (result === "Success") {
-      router.push("/");
-    } else {
-      setError(result);
+    if ("error" in result) {
+      setServerError(result.error ?? "");
+    } else if ("success" in result) {
+      setSuccessMessage(result.success);
     }
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      {error && <p className="text-red-500">{error}</p>}
+      {serverError && <p className="text-red-500">{serverError}</p>}
+      {successMessage && <p className="text-green-500">{successMessage}</p>}
 
       <div className="grid w-full max-w-sm items-center gap-1.5">
         <label
@@ -74,15 +77,33 @@ const CredentialsSignIn: React.FC = () => {
         {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
       </div>
 
+      <div className="grid w-full max-w-sm items-center gap-1.5">
+        <label
+          htmlFor="confirmPassword"
+          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+        >
+          Confirm Password
+          <span className="text-red-500 ml-1">*</span>
+        </label>
+        <input
+          id="confirmPassword"
+          type="password"
+          placeholder="Confirm Password"
+          {...register("confirmPassword")}
+          className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+        />
+        {errors.confirmPassword && <p className="text-red-500 text-sm">{errors.confirmPassword.message}</p>}
+      </div>
+
       <button
         type="submit"
         disabled={isSubmitting}
         className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50"
       >
-        {isSubmitting ? "Signing in..." : "Sign in"}
+        {isSubmitting ? "Registering..." : "Register"}
       </button>
     </form>
   );
 };
 
-export default CredentialsSignIn;
+export default CredentialsRegister;

@@ -15,13 +15,14 @@ datasource db {
 }
 
 model User {
-  id             String    @id @default(auto()) @map("_id") @db.ObjectId
-  name           String?
-  email          String?   @unique
-  hashedPassword String?
-  emailVerified  DateTime?
-  image          String?
-  accounts       Account[]
+  id                String    @id @default(auto()) @map("_id") @db.ObjectId
+  name              String?
+  email             String?   @unique
+  hashedPassword    String?
+  emailVerified     DateTime?
+  verificationToken String?   @unique
+  image             String?
+  accounts          Account[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

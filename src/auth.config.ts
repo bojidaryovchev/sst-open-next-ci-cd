@@ -2,54 +2,75 @@ import type { NextAuthConfig } from "next-auth";
 import credentials from "next-auth/providers/credentials";
 import google from "next-auth/providers/google";
 import { ZodError } from "zod";
-import { saltAndHashPassword, verifyPassword } from "./lib/crypto";
-import { signInSchema } from "./lib/zod";
+import { verifyPassword } from "./lib/crypto";
 import prisma from "./prisma";
+import { signInSchema } from "./schemas/sign-in.schema";
 
-export default {
-  providers: [
-    google,
-    credentials({
-      credentials: {
-        email: {},
-        password: {},
-      },
-      authorize: async (credentials) => {
-        try {
-          const { email, password } = await signInSchema.parseAsync(credentials);
+const providers: NextAuthConfig["providers"] = [
+  google,
+  credentials({
+    credentials: {
+      email: {},
+      password: {},
+    },
+    authorize: async (credentials) => {
+      try {
+        const { email, password } = await signInSchema.parseAsync(credentials);
 
-          let user = await prisma.user.findUnique({
-            where: {
-              email,
-            },
-          });
+        const user = await prisma.user.findUnique({
+          where: {
+            email,
+          },
+        });
 
-          if (!user) {
-            user = await prisma.user.create({
-              data: {
-                email,
-                hashedPassword: saltAndHashPassword(password),
-              },
-            });
-
-            return user;
-          }
-
-          if (!verifyPassword(user.hashedPassword!, password)) {
-            return null;
-          }
-
-          return user;
-        } catch (error) {
-          if (error instanceof ZodError) {
-            // Return `null` to indicate that the credentials are invalid
-            return null;
-          }
-
-          // TODO: Consider further error handling
+        if (!user || !user.hashedPassword) {
           return null;
         }
-      },
-    }),
-  ],
-} satisfies NextAuthConfig;
+
+        if (!user.emailVerified) {
+          throw new Error("Please verify your email before logging in");
+        }
+
+        if (!verifyPassword(user.hashedPassword, password)) {
+          return null;
+        }
+
+        return user;
+      } catch (error) {
+        if (error instanceof ZodError) {
+          return null;
+        }
+
+        if (error instanceof Error) {
+          throw error;
+        }
+
+        return null;
+      }
+    },
+  }),
+];
+
+const pages: NextAuthConfig["pages"] = {
+  signIn: "/auth",
+};
+
+const callbacks: NextAuthConfig["callbacks"] = {
+  async jwt({ token, user }) {
+    if (user) {
+      token.id = user.id;
+    }
+
+    return token;
+  },
+
+  async session({ session, token }) {
+    if (session.user) {
+      session.user.id = token.id as string;
+    }
+
+    return session;
+  },
+};
+
+export default { providers, pages, callbacks } satisfies NextAuthConfig;
