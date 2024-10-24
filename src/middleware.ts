@@ -6,7 +6,7 @@ export default auth((req) => {
   const path = req.nextUrl.pathname;
 
   // Allow access to the auth page
-  if (path === "/auth") {
+  if (path === "/auth" || path === "/verify-email") {
     return NextResponse.next();
   }
 
