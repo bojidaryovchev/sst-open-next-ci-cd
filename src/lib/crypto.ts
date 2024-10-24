@@ -1,9 +1,11 @@
 const encoder = new TextEncoder();
 
-async function deriveKey(password: string, salt: Uint8Array): Promise<CryptoKey> {
-  const baseKey = await crypto.subtle.importKey("raw", encoder.encode(password), "PBKDF2", false, ["deriveBits"]);
+async function deriveKey(password: string, salt: Uint8Array): Promise<ArrayBuffer> {
+  const baseKey = await crypto.subtle.importKey("raw", encoder.encode(password), { name: "PBKDF2" }, false, [
+    "deriveBits",
+  ]);
 
-  return crypto.subtle.deriveKey(
+  return crypto.subtle.deriveBits(
     {
       name: "PBKDF2",
       salt: salt,
@@ -11,17 +13,14 @@ async function deriveKey(password: string, salt: Uint8Array): Promise<CryptoKey>
       hash: "SHA-256",
     },
     baseKey,
-    { name: "AES-GCM", length: 256 },
-    true,
-    ["encrypt", "decrypt"],
+    256, // 256 bits
   );
 }
 
 export async function saltAndHashPassword(password: string): Promise<string> {
   const salt = crypto.getRandomValues(new Uint8Array(16));
-  const key = await deriveKey(password, salt);
-  const keyBuffer = await crypto.subtle.exportKey("raw", key);
-  const keyArray = Array.from(new Uint8Array(keyBuffer));
+  const derivedKey = await deriveKey(password, salt);
+  const keyArray = Array.from(new Uint8Array(derivedKey));
 
   return `${btoa(String.fromCharCode.apply(null, Array.from(salt)))}:${btoa(String.fromCharCode.apply(null, keyArray))}`;
 }
@@ -31,10 +30,9 @@ export async function verifyPassword(storedHash: string, inputPassword: string):
   const salt = Uint8Array.from(atob(saltString), (c) => c.charCodeAt(0));
   const storedKey = Uint8Array.from(atob(keyString), (c) => c.charCodeAt(0));
 
-  const inputKey = await deriveKey(inputPassword, salt);
-  const inputKeyBuffer = await crypto.subtle.exportKey("raw", inputKey);
+  const derivedKey = await deriveKey(inputPassword, salt);
 
-  return arrayBufferEquals(inputKeyBuffer, storedKey.buffer);
+  return arrayBufferEquals(derivedKey, storedKey.buffer);
 }
 
 function arrayBufferEquals(buf1: ArrayBuffer, buf2: ArrayBuffer): boolean {
