@@ -23,7 +23,7 @@ const CredentialsSignIn: React.FC = () => {
     setError(null);
     const formData = new FormData();
     formData.append("email", data.email);
-    formData.append("password", data.password);
+    formData.append("password", data.password!);
 
     const result = await authenticate(undefined, formData);
 

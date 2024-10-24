@@ -30,7 +30,7 @@ export async function registerUser(formData: FormData) {
     await prisma.user.create({
       data: {
         email,
-        hashedPassword: saltAndHashPassword(password),
+        hashedPassword: await saltAndHashPassword(password),
         verificationToken,
       },
     });
