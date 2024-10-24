@@ -12,10 +12,11 @@ const providers: NextAuthConfig["providers"] = [
     credentials: {
       email: {},
       password: {},
+      isEmailVerification: {},
     },
     authorize: async (credentials) => {
       try {
-        const { email, password } = await signInSchema.parseAsync(credentials);
+        const { email, password, isEmailVerification } = await signInSchema.parseAsync(credentials);
 
         const user = await prisma.user.findUnique({
           where: {
@@ -27,12 +28,15 @@ const providers: NextAuthConfig["providers"] = [
           return null;
         }
 
-        if (!user.emailVerified) {
-          throw new Error("Please verify your email before logging in");
-        }
+        // Skip password check if it's an email verification login
+        if (!isEmailVerification) {
+          if (!user.emailVerified) {
+            throw new Error("Please verify your email before logging in");
+          }
 
-        if (!verifyPassword(user.hashedPassword, password)) {
-          return null;
+          if (!verifyPassword(user.hashedPassword, password!)) {
+            return null;
+          }
         }
 
         return user;

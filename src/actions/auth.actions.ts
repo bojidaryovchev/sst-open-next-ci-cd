@@ -64,6 +64,12 @@ export async function verifyEmail(token: string) {
     },
   });
 
+  await signIn("credentials", {
+    redirect: false,
+    email: user.email,
+    isEmailVerification: true,
+  });
+
   return { success: "Email verified successfully" };
 }
 
