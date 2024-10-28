@@ -7,7 +7,7 @@ export const signInSchema = z.object({
     .min(1, { message: "Password is required" })
     .min(8, { message: "Password must be at least 8 characters" })
     .optional(),
-  isEmailVerification: z.boolean().optional(),
+  callbackUrl: z.string().optional(),
 });
 
 export type SignInFormValues = z.infer<typeof signInSchema>;
