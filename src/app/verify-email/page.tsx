@@ -1,10 +1,12 @@
 "use client";
 
 import { verifyEmail } from "@/actions/auth.actions";
-import { redirect, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 const VerifyEmailPage: React.FC = () => {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
   const [status, setStatus] = useState<"loading" | "success" | "error">("loading");
@@ -16,7 +18,7 @@ const VerifyEmailPage: React.FC = () => {
         if ("success" in result) {
           setStatus("success");
           setMessage(result.success ?? "");
-          redirect("/");
+          router.push("/");
         } else {
           setStatus("error");
           setMessage(result.error);
@@ -26,7 +28,7 @@ const VerifyEmailPage: React.FC = () => {
       setStatus("error");
       setMessage("No verification token provided");
     }
-  }, [token]);
+  }, [token, router]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
