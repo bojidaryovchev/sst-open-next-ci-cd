@@ -16,7 +16,7 @@ const VerifyEmailPage: React.FC = () => {
         if ("success" in result) {
           setStatus("success");
           setMessage(result.success ?? "");
-          redirect("/auth");
+          redirect("/");
         } else {
           setStatus("error");
           setMessage(result.error);
