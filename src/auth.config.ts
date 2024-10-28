@@ -16,7 +16,13 @@ const providers: NextAuthConfig["providers"] = [
     },
     authorize: async (credentials) => {
       try {
+        console.log(">>>>>>>>>>>>>>>>>>>>>>>>>> credentials");
+        console.log(credentials);
+
         const { email, password, isEmailVerification } = await signInSchema.parseAsync(credentials);
+
+        console.log(">>>>>>>>>>>>>>>>>>>>>>>>>> {email, password, isEmailVerification}");
+        console.log({email, password, isEmailVerification});
 
         const user = await prisma.user.findUnique({
           where: {

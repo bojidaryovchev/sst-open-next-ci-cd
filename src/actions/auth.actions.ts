@@ -64,11 +64,19 @@ export async function verifyEmail(token: string) {
     },
   });
 
+  console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> {redirect: false,mail: user.email,isEmailVerification: true,}");
+  console.log({
+    redirect: false,
+    email: user.email,
+    isEmailVerification: true,
+  });
   await signIn("credentials", {
     redirect: false,
     email: user.email,
     isEmailVerification: true,
   });
+
+  console.log("HERE");
 
   return { success: "Email verified successfully" };
 }
