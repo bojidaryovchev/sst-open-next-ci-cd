@@ -1,7 +1,7 @@
 "use client";
 
 import { registerUser } from "@/actions/auth.actions";
-import { RegisterFormValues, registerSchema } from "@/schemas/register.schema";
+import { RegisterFormInput, registerSchema } from "@/schemas/register.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useState } from "react";
@@ -15,11 +15,11 @@ const CredentialsRegister: React.FC = () => {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<RegisterFormValues>({
+  } = useForm<RegisterFormInput>({
     resolver: zodResolver(registerSchema),
   });
 
-  const onSubmit = async (formValues: RegisterFormValues) => {
+  const onSubmit = async (formValues: RegisterFormInput) => {
     setServerError(null);
     setSuccessMessage(null);
 

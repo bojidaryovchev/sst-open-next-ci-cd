@@ -10,4 +10,4 @@ export const signInSchema = z.object({
   callbackUrl: z.string().optional(),
 });
 
-export type SignInFormValues = z.infer<typeof signInSchema>;
+export type SignInFormInput = z.infer<typeof signInSchema>;

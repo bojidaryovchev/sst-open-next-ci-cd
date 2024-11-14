@@ -1,5 +1,5 @@
+import { auth } from "@/auth";
 import Image from "next/image";
-import { auth } from "../auth";
 
 const UserAvatar: React.FC = async () => {
   const session = await auth();

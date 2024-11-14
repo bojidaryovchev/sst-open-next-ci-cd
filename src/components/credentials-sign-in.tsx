@@ -1,7 +1,7 @@
 "use client";
 
 import { authenticate } from "@/actions/auth.actions";
-import { SignInFormValues, signInSchema } from "@/schemas/sign-in.schema";
+import { SignInFormInput, signInSchema } from "@/schemas/sign-in.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -15,11 +15,11 @@ const CredentialsSignIn: React.FC = () => {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<SignInFormValues>({
+  } = useForm<SignInFormInput>({
     resolver: zodResolver(signInSchema),
   });
 
-  const onSubmit = async (data: SignInFormValues) => {
+  const onSubmit = async (data: SignInFormInput) => {
     setError(null);
     const formData = new FormData();
     formData.append("email", data.email);
