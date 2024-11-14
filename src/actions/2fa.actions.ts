@@ -64,3 +64,23 @@ export async function verify2FA(formData: FormData) {
 
   return { success: true };
 }
+
+export async function verifyActionToken(token: string) {
+  const session = await auth();
+  if (!session?.user?.email) {
+    throw new Error("Unauthorized");
+  }
+
+  const user = await prisma.user.findUnique({ where: { email: session.user.email } });
+  if (!user || !user.twoFactorSecret) {
+    throw new Error("User not found or 2FA not set up");
+  }
+
+  const isValid = verifyToken(user.twoFactorSecret, token);
+
+  if (!isValid) {
+    return { error: "Invalid token" };
+  }
+
+  return { success: true };
+}
