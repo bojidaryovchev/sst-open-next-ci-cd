@@ -1,10 +1,10 @@
 "use server";
 
 import { signIn } from "@/auth";
-import { saltAndHashPassword } from "@/lib/crypto";
-import { extractSender } from "@/lib/environment";
 import prisma from "@/prisma";
 import { registerSchema } from "@/schemas/register.schema";
+import { saltAndHashPassword } from "@/utils/crypto.utils";
+import { extractSender } from "@/utils/env.utils";
 import { SendEmailCommand, SESv2Client } from "@aws-sdk/client-sesv2";
 import { randomBytes } from "crypto";
 import { AuthError } from "next-auth";

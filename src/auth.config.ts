@@ -2,9 +2,9 @@ import type { NextAuthConfig } from "next-auth";
 import credentials from "next-auth/providers/credentials";
 import google from "next-auth/providers/google";
 import { ZodError } from "zod";
-import { verifyPassword } from "./lib/crypto";
 import prisma from "./prisma";
 import { signInSchema } from "./schemas/sign-in.schema";
+import { verifyPassword } from "./utils/crypto.utils";
 
 const providers: NextAuthConfig["providers"] = [
   google,
