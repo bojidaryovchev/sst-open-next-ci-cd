@@ -3,12 +3,7 @@ export function extractSender() {
     throw new Error("Parameter `SST_RESOURCE_OpenNextEmail` not found in `process.env`.");
   }
 
-  console.log('process.env');
-  console.log(process.env);
-
   const { sender } = JSON.parse(process.env.SST_RESOURCE_OpenNextEmail);
-
-  console.log(`Extracted sender ${sender}`);
 
   return sender;
 }

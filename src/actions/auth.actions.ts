@@ -100,7 +100,11 @@ export async function resendVerificationEmail(email: string) {
 export async function sendVerificationEmail(email: string, token: string) {
   const client = new SESv2Client();
   const sender = extractSender();
-  const verificationUrl = `${sender}/verify-email?token=${token}`;
+
+  const verificationUrl =
+    process.env.NODE_ENV === "development"
+      ? `http://localhost:${process.env.PORT}/verify-email?token=${token}`
+      : `${sender}/verify-email?token=${token}`;
 
   await client.send(
     new SendEmailCommand({
