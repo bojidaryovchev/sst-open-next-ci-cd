@@ -5,5 +5,7 @@ export function extractSender() {
 
   const { sender } = JSON.parse(process.env.SST_RESOURCE_OpenNextEmail);
 
+  console.log(`Extracted sender ${sender}`);
+
   return sender;
 }

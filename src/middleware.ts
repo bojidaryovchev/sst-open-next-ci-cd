@@ -1,12 +1,14 @@
 import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 
+const publicPaths = ["/auth", "/verify-email", "/resend-verification"];
+
 export default auth((req) => {
   // Get the pathname of the request (e.g. `/`, `/protected`, `/api/user`)
   const path = req.nextUrl.pathname;
 
   // Allow access to the auth page
-  if (path === "/auth" || path === "/verify-email") {
+  if (publicPaths.includes(path)) {
     return NextResponse.next();
   }
 
